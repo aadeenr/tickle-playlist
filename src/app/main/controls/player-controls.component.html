@@ -1,0 +1,22 @@
+<div class="controls-wrapper">
+    <div class="iframe-wrapper">
+        <!--<div id="ytplayer"></div>-->
+        <iframe id="ytplayer" type="text/html" allowfullscreen="1" width="480" height="270" 
+        src="https://www.youtube.com/embed/"></iframe>
+    </div>
+    <div class="buttons-wrapper">
+        <button class="btn previous">
+            <i class="fa fa-step-backward"></i>
+        </button>
+        <button class="btn pause" (click)="playerDo('pause')" *ngIf="iframeStateEvent === 'play'">
+            <i class="fa fa-pause"></i>
+        </button>
+        <button class="btn play" (click)="playerDo('play')" *ngIf="iframeStateEvent === 'pause'">
+            <i class="fa fa-play"></i>
+        </button>
+        <button class="btn next">
+            <i class="fa fa-step-forward"></i>
+        </button>
+    </div>    
+</div>
+    

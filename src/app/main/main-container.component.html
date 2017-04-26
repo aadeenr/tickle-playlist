@@ -1,0 +1,10 @@
+<header>
+    <youtube-search (mediaList)="searchVideos($event)" ></youtube-search>
+</header>
+<main>
+    <side-bar [playlist]="playlist"></side-bar>
+    <youtube-media-list *ngIf="mediaList.length" [mediaList]="mediaList" (playlistEvent)="checkMediaInPlaylist($event)"></youtube-media-list>
+</main>
+<footer>
+    <player-controls (playFirstInPlaylist)="playFirstInPlaylist()" ></player-controls>
+</footer>
