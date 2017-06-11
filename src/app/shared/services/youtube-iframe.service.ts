@@ -1,73 +1,65 @@
-import { Injectable, EventEmitter, Output, Input } from '@angular/core';
+import { Injectable, EventEmitter, Output } from '@angular/core';
 
 let _window: any = window;
 
 @Injectable()
 export class YoutubeIframeService  {
-    @Output() playerStateEvent: EventEmitter<any> = new EventEmitter(true);
-    @Output() videoChangeEvent: EventEmitter<any> = new EventEmitter(true);
+    @Output() playFirstInPlaylist = new EventEmitter();
     
-      public ytPlayer: any;
-      public videoId: string = "nSDgHBxUbVQ";
+    public currentPlayerState: any;
 
-      createIframe() {
-          let interval = setInterval(() => {
-              if((typeof _window.YT !== "undefined") && _window.YT && _window.YT.Player) {
-                let ytPlayer = new _window.YT.Player('ytplayer', {
-                    height: '270',
-                    width: '480',
-                    videoId: this.videoId,
-                    events: {
-                        onStateChange: (event) => {
-                            this.onPlayerStateChange(event);
-                        }
-                    }                    
-                });
-                clearInterval(interval);
-              this.ytPlayer = ytPlayer;
-              }
-          }, 100)               
-        }
-      
-      onPlayerStateChange(event: any) {
-          const state = event.data;
-          switch(state) {
-              case 0: 
-                this.videoChangeEvent.emit(true);
-                this.playerStateEvent.emit('pause');
-                break;
-              case 1: 
-                this.playerStateEvent.emit('play');
-                break;
-              case 2: 
-                this.playerStateEvent.emit('pause');
-                break;
+      constructor() {
+          if(_window.YT) {
+              this.onYoutubeIframeAPIReady();
           }
+      }
+
+      loadAPI() {
+        let tag = document.createElement('script');
+        tag.src = "https://www.youtube.com/player_api";
+        let firstScriptTag = document.getElementsByTagName('script')[0];
+        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+        this.onYoutubeIframeAPIReady;
+      }
+
+      onYoutubeIframeAPIReady() {
+          _window.ytPlayer = new _window.YT.Player('ytplayer', {
+              width: "480", 
+              height: "270", 
+              events: {
+                  'onStateChange': this.onPlayerStateChange,
+                  'onError': this.onPlayerError
+              }
+          });                
+      }
+
+      onPlayerError(event) {
+          _window.postMessage('videoerror', '*');
+          return;
+      }
+
+      onPlayerStateChange(event) {
+          const state = event.data;          
+          _window.postMessage(state, '*');
       }
 
       getVideoId(videoId: string) {
-          this.videoId = videoId;
-          console.log(this.videoId, '::new videoID');
-          
-          if(!this.ytPlayer) {
-              console.log('ytPlayer is ', this.ytPlayer);
-              
-              this.createIframe();
-
-              return;
+          _window.videoId = videoId;
+          if(_window.ytPlayer.loadVideoById()) {
+            _window.ytPlayer.loadVideoById(videoId);
           }
-          this.ytPlayer.loadVideoById(videoId);
       }
 
-      playVideo(): void {
-          this.ytPlayer.playVideo();
+      playVideo(): void {          
+          _window.ytPlayer.playVideo();
       }
 
       pauseVideo(): void {
-          this.ytPlayer.pauseVideo();
+          _window.ytPlayer.pauseVideo();
       }
 
       getCurrentVideo(): string {
-          return this.videoId;
+          return _window.videoId;
       }
 }

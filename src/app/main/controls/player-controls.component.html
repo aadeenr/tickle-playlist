@@ -1,20 +1,18 @@
 <div class="controls-wrapper">
-    <div class="iframe-wrapper">
-        <!--<div id="ytplayer"></div>-->
-        <iframe id="ytplayer" type="text/html" allowfullscreen="1" width="480" height="270" 
-        src="https://www.youtube.com/embed/"></iframe>
+    <div class="iframe-wrapper" (videoChangeEvent)="videoChange($event)">
+        <div id="ytplayer"></div>
     </div>
     <div class="buttons-wrapper">
-        <button class="btn previous">
+        <button class="btn previous" (click)="playlistDo('playPrev')">
             <i class="fa fa-step-backward"></i>
         </button>
-        <button class="btn pause" (click)="playerDo('pause')" *ngIf="iframeStateEvent === 'play'">
+        <button class="btn pause" (click)="playerDo('pause')" *ngIf="currentState === 'play'">
             <i class="fa fa-pause"></i>
         </button>
-        <button class="btn play" (click)="playerDo('play')" *ngIf="iframeStateEvent === 'pause'">
+        <button class="btn play" (click)="playerDo('play')" *ngIf="currentState === 'pause'">
             <i class="fa fa-play"></i>
         </button>
-        <button class="btn next">
+        <button class="btn next" (click)="playlistDo('playNext')">
             <i class="fa fa-step-forward"></i>
         </button>
     </div>    

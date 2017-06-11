@@ -1,6 +1,9 @@
 import { Component, ViewEncapsulation, AfterContentInit, Output, EventEmitter } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
 
-import { YoutubeIframeService } from '../../shared/services/youtube-iframe.service'
+import { YoutubeIframeService } from '../../shared/services/youtube-iframe.service';
+
+let _window: any = window;
 
 @Component({
     selector: 'player-controls',
@@ -15,28 +18,43 @@ import { YoutubeIframeService } from '../../shared/services/youtube-iframe.servi
  
  export class PlayerControlsComponent implements AfterContentInit {
     @Output() playFirstInPlaylist = new EventEmitter();
+    @Output() playlistDoEvent = new EventEmitter();
 
-    public iframeStateEvent: string = 'pause';
+    public currentState: string = 'pause';
     
     constructor (
          private iframeService: YoutubeIframeService
     ) {
-        this.iframeService.playerStateEvent.subscribe(state => this.iframeStateEvent = state);
+        _window.addEventListener('message', (event) => {
+            if (Number.isInteger(event.data)) {
+                if (event.data === 1) {
+                    this.currentState = 'play';                    
+                } else {
+                    this.currentState = 'pause';
+                }
+            }
+            if (event.data === "videoerror") {
+                this.playerDo('play');
+                return;
+            }
+        }, false);
     }
 
     ngAfterContentInit() {
-        let tag = document.createElement('script');
-        tag.src = "https://www.youtube.com/player_api";
-        let firstScriptTag = document.getElementsByTagName('script')[0];
-        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+        this.iframeService.loadAPI();
+    }
 
-        this.iframeService.createIframe();
+    playlistDo(event: string) {
+        this.playlistDoEvent.emit(event);
     }
 
     playerDo(event: string): void {
-        this.iframeStateEvent = event;
+        this.currentState = event;
+        let id = this.iframeService.getCurrentVideo();
+
         if(!this.iframeService.getCurrentVideo()) {
 			this.playFirstInPlaylist.emit();
+            
 			return;
 		}
         event === 'pause' ? this.iframeService.pauseVideo() : this.iframeService.playVideo();

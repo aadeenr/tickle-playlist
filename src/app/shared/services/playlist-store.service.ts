@@ -25,6 +25,12 @@ export class PlaylistStoreService  {
         return storedPlaylist;
     }
 
+    public importPlaylist(playlist: any): void {
+        let store = this.parse();
+        store.playlists = playlist;
+        localStorage.setItem(this.ticklePlaylist, JSON.stringify(store));
+    }
+
     public addToPlaylist(media: any): void {
         let store = this.parse();
         store.playlists.push(media);
@@ -39,11 +45,5 @@ export class PlaylistStoreService  {
 
     public resetPlaylist() {
         this.init();
-    }
-
-    public importPlaylist(playlist: any): void {
-        let store = this.parse();
-        store.playlists = playlist;
-        localStorage.setItem(this.ticklePlaylist, JSON.stringify(store));
     }
 }

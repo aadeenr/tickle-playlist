@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Output, EventEmitter } from '@angular/core';
 
 import { PlaylistStoreService } from '../shared/services/playlist-store.service';
 import { YoutubeIframeService } from '../shared/services/youtube-iframe.service';
@@ -12,6 +12,7 @@ import { YoutubeIframeService } from '../shared/services/youtube-iframe.service'
 export class MainComponent {
   public playlist = [];
   public mediaList = [];
+  public playlistChange = [0, ''];
 
   constructor(
     private playlistStoreService: PlaylistStoreService,
@@ -21,7 +22,7 @@ export class MainComponent {
   }
 
   playFirstInPlaylist(): void {
-		if (this.playlist[0]) {
+		if (this.playlist[0]) {      
 			let playlistEl = document.getElementById('playlist');
 			playlistEl.scrollTop = 0;
 			this.iframeService.getVideoId(this.playlist[0].id);
@@ -32,7 +33,17 @@ export class MainComponent {
 		this.mediaList = videos;
 	}
 
-  checkMediaInPlaylist(media: any): void {
+  playlistDo(event: any) {
+    let toIncrement = Number(this.playlistChange[0]) + 1;
+    this.playlistChange = [toIncrement, event];
+}
+
+  resetPlaylist(): void {
+		this.playlist = [];
+		this.playlistStoreService.resetPlaylist();
+	}
+
+  checkMediaInPlaylist(media: any): void {    
     if (!this.playlist.some(item => item.id === media.id)) {
 			this.playlist.push(media);
 			this.playlistStoreService.addToPlaylist(media);

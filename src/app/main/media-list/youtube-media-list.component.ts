@@ -11,7 +11,7 @@ import { YoutubeIframeService } from '../../shared/services/youtube-iframe.servi
 
 export class YoutubeMediaListComponent {
 	@Input() mediaList;
-	@Output() playlistEvent: EventEmitter<any> = new EventEmitter();
+	@Output() checkMediaEvent: EventEmitter<any> = new EventEmitter();
 
 	constructor(
 		private iframeService: YoutubeIframeService
@@ -23,6 +23,6 @@ export class YoutubeMediaListComponent {
 	}
 
 	addToPlaylist(media: any): void {
-		this.playlistEvent.emit(media);
+		this.checkMediaEvent.emit(media);
 	}
 }

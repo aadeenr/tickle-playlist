@@ -8,6 +8,15 @@
     background: orangered;
 }
 
+
+.youtube-media.active {
+    background: rgba(0,0,0,0.3);
+}
+
+.btn.active {
+    background: orangered;
+}
+
 .playlist-title {
     padding-top: 80px;
     display: inline-block;
