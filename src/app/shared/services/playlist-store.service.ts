@@ -37,7 +37,7 @@ export class PlaylistStoreService  {
         localStorage.setItem(this.ticklePlaylist, JSON.stringify(store));
     }
 
-    public removeFromPlaylist(media: any) {
+    public removeMediaFromPlaylist(media: any) {
         let store = this.parse();
         store.playlists = store.playlists.filter(item => item.id !== media.id);
         localStorage.setItem(this.ticklePlaylist, JSON.stringify(store));

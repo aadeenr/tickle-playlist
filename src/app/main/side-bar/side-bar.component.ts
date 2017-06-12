@@ -13,7 +13,7 @@ const _window: any = window;
 
 export class SidebarComponent {
 	@Output() resetPlaylistEvent = new EventEmitter();
-	// @Output() uploadPlaylistEvent = new EventEmitter();
+	@Output() removeMediaEvent = new EventEmitter();
 
 	@Input() playlist;
 	@Input() repeat: boolean;
@@ -40,17 +40,17 @@ export class SidebarComponent {
 		this.resetPlaylistEvent.emit();
 	}
 
+	removeMedia(media: any): void {
+		this.playlist.splice(this.playlist.indexOf(media), 1);
+		this.removeMediaEvent.emit(media);
+	}
+
     play(id: string): void {		
 		this.iframeService.getVideoId(id);		
 	}
 
 	currentlyPlaying(id: string): boolean {
 		return this.iframeService.getCurrentVideo() === id;
-	}
-
-	removeFromPlaylist(media: any): void {
-		this.playlist.splice(this.playlist.indexOf(media), 1);
-		this.playlistStoreService.removeFromPlaylist(media);
 	}
 
 	playNext(where: string): void {
@@ -110,7 +110,6 @@ export class SidebarComponent {
 	}
 
 	downloadPlaylist() {
-		console.log('download: ', JSON.stringify(this.playlistStoreService.getStoredPlaylists()));
 		let JSONdata = JSON.stringify(this.playlistStoreService.getStoredPlaylists());
 		let data = "text/json;charset=utf-8," + encodeURIComponent(JSONdata);
 		let a = _window.document.createElement('a');
@@ -120,16 +119,12 @@ export class SidebarComponent {
 	}
 
 	uploadPlaylist() {
-		console.log('upload: ', _window.document.getElementById('upload-input'));
 		_window.document.getElementById('upload-input').click();
 	}
 
 	changePlaylist(data: any) {
-		console.log(data.target.files[0], '::reader loaded');
-
 		let file = data.dataTransfer ? data.dataTransfer.files[0] : data.target.files[0];
 		if(file.name.split('.').pop() !== 'json') {
-			console.log('File not supported.');
 			return;
 		}
 		let reader = new FileReader();
@@ -138,23 +133,17 @@ export class SidebarComponent {
 		reader.onload = function(ev) {
 			let list;
 			try {
-				list = JSON.parse(ev.target['result']);
-				console.log(list, '::list');
-				
+				list = JSON.parse(ev.target['result']);				
 			} catch (exc) {
 				list = null;
 			}
 			if(!list) {
-				console.log('Playlist not valid.');
 				return;
 			}
-			if(list.length < 1) { 
-				console.log('Nothing to import.');
+			if(list.length < 1) {
 				return;
 			}
-			// me.uploadPlaylistEvent.emit(list);
 			
-			console.log(typeof(list.playlists),'Playlist imported.');
 			if(typeof(list) === 'object') {
 				me.playlist = list.playlists;
 			} else {

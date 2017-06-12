@@ -43,6 +43,10 @@ export class MainComponent {
 		this.playlistStoreService.resetPlaylist();
 	}
 
+  removeMediaFromPlaylist(media: any):void {
+    this.playlistStoreService.removeMediaFromPlaylist(media);
+  }
+
   checkMediaInPlaylist(media: any): void {    
     if (!this.playlist.some(item => item.id === media.id)) {
 			this.playlist.push(media);

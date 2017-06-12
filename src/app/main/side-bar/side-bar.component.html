@@ -26,6 +26,9 @@
                     {{ media.snippet.title }}
                 </div>
             </div>
+            <button class="btn clear-media" (click)="removeMedia(media)">
+                <i class="fa fa-trash-o" aria-hidden="true"></i>
+            </button>
         </li>
     </ul>
 </div>

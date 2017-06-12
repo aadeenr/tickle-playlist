@@ -1,6 +1,6 @@
-<ul class="youtube-media-list">
-    <li class="youtube-media-wrapper" *ngFor="let media of mediaList">
-        <div class="youtube-media" (click)="play(media)">
+<ul class="youtube-media-list" infiniteScroll (scrolled)="onScroll()">
+    <li class="youtube-media-wrapper" *ngFor="let media of mediaList" (click)="play(media)">
+        <div class="youtube-media" >
             <div class="media-thumbnail">
                 <img src="{{ media.snippet.thumbnails.medium?.url }}" alt="Thumbnail">
                 <div class="overlay">

@@ -14,6 +14,8 @@ import { YOUTUBE_API_KEY } from '../constants';
 export class YoutubeApiService {
 	base_url: string = 'https://www.googleapis.com/youtube/v3/';
 	max_results: number = 20;
+	nextPageToken: string;
+	query: string;
     
 	constructor(
 		private http: Http
@@ -22,10 +24,30 @@ export class YoutubeApiService {
 	searchVideos(query: string): Promise<any> {
 		return this.http.get(this.base_url + 'search?q=' + query + '&maxResults=' + this.max_results + '&type=video&part=snippet,id&key=' + YOUTUBE_API_KEY + '&videoEmbeddable=true')
 			.map((response) => {
-				let jsonRes = response.json();				
-				let res = jsonRes['items'];				
+				let jsonRes = response.json();
+				let res = jsonRes['items'];
+				this.nextPageToken = jsonRes['nextPageToken'];
+				this.query = query;
 				let ids = [];
+				
+				res.forEach((item) => {
+					ids.push(item.id.videoId);
+				});
 
+				return this.getVideos(ids);
+			})
+			.toPromise()
+			.catch(this.handleError)
+	}
+
+	searchMore(): Promise<any> {
+		return this.http.get(this.base_url + 'search?q=' + this.query + '&pageToken=' + this.nextPageToken + '&maxResults=' + 5 + '&type=video&part=snippet,id&key=' + YOUTUBE_API_KEY + '&videoEmbeddable=true')
+			.map((response) => {
+				let jsonRes = response.json();
+				let res = jsonRes['items'];
+				this.nextPageToken = jsonRes['nextPageToken'];
+				let ids = [];
+				
 				res.forEach((item) => {
 					ids.push(item.id.videoId);
 				});

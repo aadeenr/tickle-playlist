@@ -1,7 +1,9 @@
-import { NgModule }      from '@angular/core';
-import { FormsModule }   from '@angular/forms';
-import { HttpModule }    from '@angular/http';
-import { BrowserModule } from '@angular/platform-browser';
+import { NgModule }             from '@angular/core';
+import { BrowserModule }        from '@angular/platform-browser';
+import { FormsModule }          from '@angular/forms';
+import { HttpModule }           from '@angular/http';
+
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 
 import { AppComponent }                from './app.component';
 import { MainComponent }                from './main/main-container.component';
@@ -25,6 +27,7 @@ import { PlaylistStoreService } from './shared/services/playlist-store.service';
   ],
   imports: [
     BrowserModule,
+    InfiniteScrollModule,
     FormsModule,
     HttpModule
   ],

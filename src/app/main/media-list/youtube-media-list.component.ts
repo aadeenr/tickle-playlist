@@ -1,6 +1,7 @@
 import { Component, Output, Input, EventEmitter } from '@angular/core';
 
 import { YoutubeIframeService } from '../../shared/services/youtube-iframe.service';
+import { YoutubeApiService } from '../../shared/services/youtube-api.service';
 
 @Component({
 	selector: 'youtube-media-list',
@@ -14,7 +15,8 @@ export class YoutubeMediaListComponent {
 	@Output() checkMediaEvent: EventEmitter<any> = new EventEmitter();
 
 	constructor(
-		private iframeService: YoutubeIframeService
+		private iframeService: YoutubeIframeService,
+		private apiService: YoutubeApiService
     ){}
 
 	play(media: any): void {
@@ -24,5 +26,18 @@ export class YoutubeMediaListComponent {
 
 	addToPlaylist(media: any): void {
 		this.checkMediaEvent.emit(media);
+	}
+
+	onScroll () {
+		this.apiService.searchMore().then(data => {
+			data.forEach(element => {
+				let id = element.id;
+				let x = this.mediaList.filter(same => same.id == id)[0];
+
+				if (!x) {
+					this.mediaList.push(element);
+				}
+			});
+		});
 	}
 }
