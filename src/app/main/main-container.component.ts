@@ -4,24 +4,24 @@ import { PlaylistStoreService } from '../shared/services/playlist-store.service'
 import { YoutubeIframeService } from '../shared/services/youtube-iframe.service';
 
 @Component({
-  selector: 'main-container',
-  templateUrl: './main-container.component.html',
-  styleUrls: ['./main-container.component.css']
+    selector: 'main-container',
+    templateUrl: './main-container.component.html',
+    styleUrls: ['./main-container.component.css']
 })
 
 export class MainComponent {
-  public playlist = [];
-  public mediaList = [];
-  public playlistChange = [0, ''];
+    public playlist = [];
+    public mediaList = [];
+    public playlistChange = [0, ''];
 
-  constructor(
-    private playlistStoreService: PlaylistStoreService,
-    private iframeService: YoutubeIframeService
-  ) {
-    this.playlist = this.playlistStoreService.getStoredPlaylists().playlists;
-  }
+	constructor(
+		private playlistStoreService: PlaylistStoreService,
+		private iframeService: YoutubeIframeService
+	) {
+		this.playlist = this.playlistStoreService.getStoredPlaylists().playlists;
+	}
 
-  playFirstInPlaylist(): void {
+  	playFirstInPlaylist(): void {
 		if (this.playlist[0]) {      
 			let playlistEl = document.getElementById('playlist');
 			playlistEl.scrollTop = 0;
@@ -29,28 +29,28 @@ export class MainComponent {
 		}
 	}
 
-  searchVideos(videos: Array<any>): void {
+	searchVideos(videos: Array<any>): void {
 		this.mediaList = videos;
 	}
 
-  playlistDo(event: any) {
-    let toIncrement = Number(this.playlistChange[0]) + 1;
-    this.playlistChange = [toIncrement, event];
-}
-
-  resetPlaylist(): void {
-		this.playlist = [];
-		this.playlistStoreService.resetPlaylist();
+  	playlistDo(event: any) {
+      	let toIncrement = Number(this.playlistChange[0]) + 1;
+      	this.playlistChange = [toIncrement, event];
 	}
 
-  removeMediaFromPlaylist(media: any):void {
-    this.playlistStoreService.removeMediaFromPlaylist(media);
-  }
+  	resetPlaylist(): void {
+      	this.playlist = [];
+      	this.playlistStoreService.resetPlaylist();
+	}
 
-  checkMediaInPlaylist(media: any): void {    
-    if (!this.playlist.some(item => item.id === media.id)) {
+	removeMediaFromPlaylist(media: any):void {
+		this.playlistStoreService.removeMediaFromPlaylist(media);
+	}
+
+	checkMediaInPlaylist(media: any): void {    
+		if (!this.playlist.some(item => item.id === media.id)) {
 			this.playlist.push(media);
 			this.playlistStoreService.addToPlaylist(media);
 		}    
-  }
+	}
 }

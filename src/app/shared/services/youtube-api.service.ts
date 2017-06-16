@@ -10,10 +10,12 @@ import 'rxjs/add/operator/toPromise';
 
 import { YOUTUBE_API_KEY } from '../constants';
 
+let _window: any = window;
+
 @Injectable()
 export class YoutubeApiService {
 	base_url: string = 'https://www.googleapis.com/youtube/v3/';
-	max_results: number = 20;
+	max_results: number = 50;
 	nextPageToken: string;
 	query: string;
     
@@ -29,6 +31,9 @@ export class YoutubeApiService {
 				this.nextPageToken = jsonRes['nextPageToken'];
 				this.query = query;
 				let ids = [];
+
+				// for reinit ytPlayer API functions
+        		_window.postMessage('search', '*');				
 				
 				res.forEach((item) => {
 					ids.push(item.id.videoId);
@@ -41,7 +46,7 @@ export class YoutubeApiService {
 	}
 
 	searchMore(): Promise<any> {
-		return this.http.get(this.base_url + 'search?q=' + this.query + '&pageToken=' + this.nextPageToken + '&maxResults=' + 5 + '&type=video&part=snippet,id&key=' + YOUTUBE_API_KEY + '&videoEmbeddable=true')
+		return this.http.get(this.base_url + 'search?q=' + this.query + '&pageToken=' + this.nextPageToken + '&maxResults=' + this.max_results + '&type=video&part=snippet,id&key=' + YOUTUBE_API_KEY + '&videoEmbeddable=true')
 			.map((response) => {
 				let jsonRes = response.json();
 				let res = jsonRes['items'];

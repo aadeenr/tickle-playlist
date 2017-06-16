@@ -1,6 +1,7 @@
 import { Component, ViewEncapsulation, OnInit, Output, EventEmitter } from '@angular/core';
 
 import { YoutubeApiService }    from '../../shared/services/youtube-api.service';
+import { YoutubeIframeService }    from '../../shared/services/youtube-iframe.service';
 
 @Component({
     selector: 'youtube-search',
@@ -15,7 +16,8 @@ export class YoutubeSearchComponent implements OnInit {
 	previousSearch: string;
 
 	constructor(
-        private apiService: YoutubeApiService
+        private apiService: YoutubeApiService,
+        private iframeService: YoutubeIframeService
     ){
         this.apiService.searchVideos(this.searchInput).then(response => {
             this.mediaList.emit(response);
@@ -32,7 +34,7 @@ export class YoutubeSearchComponent implements OnInit {
 
     getSearch(searchInput: string) {
         this.searchInput = searchInput;
-		this.searchVideos();     
+		this.searchVideos();
     }
 
     ngOnInit() {

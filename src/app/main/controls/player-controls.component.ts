@@ -1,4 +1,4 @@
-import { Component, ViewEncapsulation, AfterContentInit, Output, EventEmitter } from '@angular/core';
+import { Component, ViewEncapsulation, Output, EventEmitter } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 
 import { YoutubeIframeService } from '../../shared/services/youtube-iframe.service';
@@ -16,7 +16,7 @@ let _window: any = window;
     encapsulation: ViewEncapsulation.None
 })
  
- export class PlayerControlsComponent implements AfterContentInit {
+ export class PlayerControlsComponent {
     @Output() playFirstInPlaylist = new EventEmitter();
     @Output() playlistDoEvent = new EventEmitter();
 
@@ -36,12 +36,12 @@ let _window: any = window;
             if (event.data === "videoerror") {
                 this.playerDo('play');
                 return;
+            } else if (event.data === "search") {
+                this.iframeService.loadAPI();
+                _window.ytPlayer.destroy();
+                
             }
         }, false);
-    }
-
-    ngAfterContentInit() {
-        this.iframeService.loadAPI();
     }
 
     playlistDo(event: string) {
