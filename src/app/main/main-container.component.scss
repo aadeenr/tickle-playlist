@@ -1,0 +1,62 @@
+@import '../shared/variables.scss';
+
+header {
+    padding: 15px 30px;
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    background: $light-color;
+    z-index: 5;
+    -webkit-box-shadow: 3px 3px 3px rgba($dark-color, 0.05);
+    box-shadow: 3px 3px 3px rgba($dark-color, 0.05);
+
+    .fa-music {
+        color: $dark-color;
+        font-size: 0.6em;
+        position: absolute;
+        top: -7px;
+        right: -2px;
+        &::before {
+            -webkit-animation: beat 650ms linear infinite;
+            animation: beat 650ms linear infinite;
+        }
+    }
+}
+
+.logo-wrapper {
+    display: inline-block;
+}
+
+.logo {
+    display: inline-block;
+
+    &-image {
+        width: 100px;
+        height: auto;
+    }
+
+    &-name {
+        padding-left: 10px;
+        color: $accent-color;
+        vertical-align: top;
+        position: relative;
+        font-size: 2.5em;
+        font-weight: bold;
+    }
+}
+
+main {
+    padding-top: 113px;
+}
+
+@-webkit-keyframes beat {
+  100% {
+    font-size: 0.8em;
+  }
+}
+@keyframes beat {
+  100% {
+    font-size: 0.8em;
+  }
+}

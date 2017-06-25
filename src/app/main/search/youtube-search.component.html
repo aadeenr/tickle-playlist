@@ -1,6 +1,8 @@
-<form #f="ngForm" (ngSubmit)="getSearch(fInput.value)" >
-    <input #fInput type="text" placeholder="Search">
-    <button type="submit" >
-        <i class="fa fa-search"></i>
-    </button>
+<form #f="ngForm" (ngSubmit)="getSearch(fInput.value)" class="search-form">
+    <span class="input">
+        <input #fInput class="input__field" type="text" id="input-38" />
+        <label class="input__label" for="input-38" data-content="Search">
+            <span class="input__label-content">Search</span>
+        </label>
+    </span>
 </form>

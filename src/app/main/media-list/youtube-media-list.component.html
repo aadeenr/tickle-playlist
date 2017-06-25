@@ -1,17 +1,38 @@
-<ul class="youtube-media-list" infiniteScroll (scrolled)="onScroll()">
-    <li class="youtube-media-wrapper" *ngFor="let media of mediaList" (click)="play(media)">
-        <div class="youtube-media" >
-            <div class="media-thumbnail">
-                <img src="{{ media.snippet.thumbnails.medium?.url }}" alt="Thumbnail">
-                <div class="overlay">
-                    <button class="btn play">
-                        <i class="fa fa-play"></i>
-                    </button>
+<div class="youtube-media-list-wrapper">
+    <ul class="youtube-media-list" infiniteScroll (scrolled)="onScroll()">
+        <li class="youtube-media-wrapper" *ngFor="let media of mediaList" (click)="play(media)">
+            <div class="youtube-media" >
+                <div class="media-thumbnail-wrapper">
+                    <div class="media-thumbnail">
+                        <img src="{{ media.snippet.thumbnails.medium?.url }}" alt="Thumbnail">
+                        <div class="overlay">
+                            <button class="btn play">
+                                <i class="fa fa-play"></i>
+                            </button>
+                        </div>
+                    </div>
+                        <button class="btn add-media" (click)="addToPlaylist(media)">
+                            <i class="fa fa-plus" aria-hidden="true"></i>
+                        </button>
+                </div>            
+                <div class="media-info">
+                    <div class="media-title">
+                        {{ media.snippet.title }}
+                    </div>
+                    <div class="media-details">
+                        <div>
+                            {{ media.snippet.channelTitle }}
+                        </div>
+                        <div>
+                            {{ 
+                            media.statistics.viewCount > 999 ? 
+                            (media.statistics.viewCount/1000).toFixed(0) + ' K' : media.statistics.viewCount
+                            }}
+                            <span> views</span>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="media-title">
-                {{ media.snippet.title }}
-            </div>
-        </div>
-    </li>
-</ul>
+        </li>
+    </ul>
+</div>

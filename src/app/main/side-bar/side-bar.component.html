@@ -1,34 +1,52 @@
 <div id="playlist" class="side-bar-wrapper">
-    <div class="playlist-title">NOW-PLAYING</div>
-    <button class="btn clear-playlist" (click)="resetPlaylist()">
-        <i class="fa fa-trash-o" aria-hidden="true"></i>
-    </button>
-    <button class="btn shuffle" (click)="shuffle = !shuffle" [ngClass]="{'active': shuffle}">
-        <i class="fa fa-random" aria-hidden="true"></i>
-    </button>
-    <button class="btn repeat" (click)="repeat = !repeat" [ngClass]="{'active': repeat}">
-        <i class="fa fa-repeat" aria-hidden="true"></i>
-    </button>
-    <button class="btn download" (click)="downloadPlaylist()">
-        <i class="fa fa-download" aria-hidden="true"></i>
-    </button>
-    <button class="btn upload" (click)="uploadPlaylist()">
-        <i class="fa fa-upload" aria-hidden="true"></i>
-    </button>
-    <input id="upload-input" type="file" name="file" style="display: none;" (change)="changePlaylist($event)">
-    <ul class="playlist now-playing">
+    <div class="playlist-title">
+        <i class="fa fa-ellipsis-v" aria-hidden="true" (click)="toggle()"></i>
+        <span>your playlist</span>
+    </div>
+    <div class="playlist-functionalities" [@toggleAnimation]='state'>
+        <button class="btn clear-playlist" (click)="resetPlaylist()">
+            <i class="fa fa-trash-o" aria-hidden="true"></i>
+            <span>delete playlist</span>
+        </button>
+        <button class="btn shuffle" (click)="shuffle = !shuffle" [ngClass]="{'active': shuffle}">
+            <i class="fa fa-random" aria-hidden="true"></i>
+            <span>shuffle playlist</span>
+        </button>
+        <button class="btn repeat" (click)="repeat = !repeat" [ngClass]="{'active': repeat}">
+            <i class="fa fa-repeat" aria-hidden="true"></i>
+            <span>repeat song</span>
+        </button>
+        <button class="btn download" (click)="downloadPlaylist()">
+            <i class="fa fa-download" aria-hidden="true"></i>
+            <span>download playlist</span>
+        </button>
+        <button class="btn upload" (click)="uploadPlaylist()">
+            <i class="fa fa-upload" aria-hidden="true"></i>
+            <span>upload playlist</span>
+        </button>
+        <input id="upload-input" type="file" name="file" style="display: none;" (change)="changePlaylist($event)">
+    </div>
+    <ul id="playlist-scroll" class="playlist now-playing" *ngIf="playlist.length; else emptyplaylist">
         <li id="{{media.id}}" class="youtube-media-wrapper" *ngFor="let media of playlist">
             <div class="youtube-media" [ngClass]="{'active': currentlyPlaying(media.id)}" (click)="play(media.id)">
-                <div class="media-thumbnail">
-                    <img src="{{ media.snippet.thumbnails.medium.url }}" alt="Thumbnail">
+                <div class="media-thumbnail-wrapper">
+                    <div class="media-thumbnail">
+                        <img src="{{ media.snippet.thumbnails.medium.url }}" alt="Thumbnail">
+                    </div>
+                    <button class="btn clear-media" (click)="removeMedia(media)">
+                        <i class="fa fa-trash-o" aria-hidden="true"></i>
+                    </button>
                 </div>
                 <div class="media-title">
                     {{ media.snippet.title }}
                 </div>
             </div>
-            <button class="btn clear-media" (click)="removeMedia(media)">
-                <i class="fa fa-trash-o" aria-hidden="true"></i>
-            </button>
         </li>
     </ul>
+    <ng-template #emptyplaylist>
+        <div style="text-align: center; padding-top: 20px;">
+            <img style="width: 150px;" alt="emplty playlist" src="../assets/images/mr_tickle-sad.png">
+            <p>(empty playlist)</p>
+        </div>
+    </ng-template>
 </div>

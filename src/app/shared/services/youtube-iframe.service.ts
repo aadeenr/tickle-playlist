@@ -25,8 +25,8 @@ export class YoutubeIframeService  {
 
     onYoutubeIframeAPIReady() {
         _window.ytPlayer = new _window.YT.Player('ytplayer', {
-            width: "480", 
-            height: "270", 
+            width: "320", 
+            height: "180", 
             events: {
                 'onStateChange': this.onPlayerStateChange,
                 'onError': this.onPlayerError

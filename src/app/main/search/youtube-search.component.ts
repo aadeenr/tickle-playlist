@@ -6,7 +6,7 @@ import { YoutubeIframeService }    from '../../shared/services/youtube-iframe.se
 @Component({
     selector: 'youtube-search',
     templateUrl: './youtube-search.component.html',
-    styleUrls: ['./youtube-search.component.css'],
+    styleUrls: ['./youtube-search.component.scss'],
     encapsulation: ViewEncapsulation.None,
 })
 

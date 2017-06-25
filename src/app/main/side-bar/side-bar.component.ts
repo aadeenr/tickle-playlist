@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { trigger,state,style,transition,animate,keyframes } from '@angular/animations';
 
 import { YoutubeIframeService } from '../../shared/services/youtube-iframe.service';
 import { PlaylistStoreService } from '../../shared/services/playlist-store.service';
@@ -6,13 +7,24 @@ import { PlaylistStoreService } from '../../shared/services/playlist-store.servi
 const _window: any = window;
 
 @Component({
-  selector: 'side-bar',
-  templateUrl: './side-bar.component.html',
-  styleUrls: ['./side-bar.component.css']
+  	selector: 'side-bar',
+  	templateUrl: './side-bar.component.html',
+  	styleUrls: ['./side-bar.component.scss'],
+    animations: [
+        trigger('toggleAnimation', [
+            state('visible', style({
+                top: '46px',
+            })),
+            state('hidden', style({
+                top: '-41px',
+            })),
+            transition('* => *', animate('300ms ease-in')),
+        ]),
+    ]
 })
 
 export class SidebarComponent {
-	@Output() resetPlaylistEvent = new EventEmitter();
+	@Output() resetPlaylistEvent = new EventEmitter(); 
 	@Output() removeMediaEvent = new EventEmitter();
 
 	@Input() playlist;
@@ -35,6 +47,11 @@ export class SidebarComponent {
             }
         }, false);
     }
+    state: string = 'hidden';
+
+	toggle() {
+		this.state = (this.state === 'visible' ? 'hidden' : 'visible');
+	}
 
 	resetPlaylist(): void {
 		this.resetPlaylistEvent.emit();
@@ -45,8 +62,10 @@ export class SidebarComponent {
 		this.removeMediaEvent.emit(media);
 	}
 
-    play(id: string): void {		
-		this.iframeService.getVideoId(id);		
+    play(id: string): void {
+		this.iframeService.getVideoId(id);
+		let playlist = document.getElementById('playlist-scroll');
+		playlist.scrollTop = document.getElementById(id).offsetTop - 74;
 	}
 
 	currentlyPlaying(id: string): boolean {
@@ -58,7 +77,7 @@ export class SidebarComponent {
 		let inPlaylist = undefined;
 
 		if (this.repeat) {
-			this.iframeService.getVideoId(nowPlaying);
+			this.play(nowPlaying);
 			return;
 		}
 		
@@ -72,32 +91,38 @@ export class SidebarComponent {
 			}
 		});		
 
-		if (inPlaylist !== undefined) {			
-			let topPos = document.getElementById(this.playlist[inPlaylist].id).offsetTop;
-			let playlist = document.getElementById('playlist');
+		if (inPlaylist !== undefined) {
+			let playlist = document.getElementById('playlist-scroll');
+			let nowPlaying = document.getElementById(this.playlist[inPlaylist].id);
+			let topPos = nowPlaying.offsetTop;
 			
 			if (this.shuffle) {
 				let shuffled = this.playlist[this.getShuffled(inPlaylist)].id;
-				this.iframeService.getVideoId(shuffled);
-				playlist.scrollTop = document.getElementById(shuffled).offsetTop - 100;
+				this.play(shuffled);
+				playlist.scrollTop = document.getElementById(shuffled).offsetTop - 74;
+				
 			} else {
 				if(where === 'playNext') {
 					if (this.playlist.length - 1 === inPlaylist) {
-						this.iframeService.getVideoId(this.playlist[0].id);
+						this.play(this.playlist[0].id);
 						playlist.scrollTop = 0;
+						console.log('first case');
 						
 					} else {
-						this.iframeService.getVideoId(this.playlist[inPlaylist + 1].id)
-						playlist.scrollTop = topPos - 100;
+						this.play(this.playlist[inPlaylist + 1].id);
+						playlist.scrollTop = topPos + 30;
+						console.log('second case');
 						
 					}
 				} else {
 					if (inPlaylist === 0) {
-						this.iframeService.getVideoId(this.playlist[this.playlist.length - 1].id);
-						playlist.scrollTop = 0;
-						
+						this.play(this.playlist[this.playlist.length - 1].id);
+						playlist.scrollTop = playlist.scrollHeight;
+						console.log('third case')
 					} else {
-						this.iframeService.getVideoId(this.playlist[inPlaylist - 1].id)
+						this.play(this.playlist[inPlaylist - 1].id);
+						playlist.scrollTop = topPos - 148;
+						console.log('fourth case')
 					}
 				}
 			}

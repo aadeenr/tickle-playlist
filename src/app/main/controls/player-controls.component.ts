@@ -9,7 +9,7 @@ let _window: any = window;
     selector: 'player-controls',
     templateUrl: './player-controls.component.html',
     styleUrls: [
-        './player-controls.component.css',
+        './player-controls.component.scss',
         './youtube-iframe.component.scss'
         ],
     providers: [ YoutubeIframeService ],

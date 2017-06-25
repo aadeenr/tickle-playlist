@@ -1,12 +1,15 @@
-import { NgModule }             from '@angular/core';
-import { BrowserModule }        from '@angular/platform-browser';
-import { FormsModule }          from '@angular/forms';
-import { HttpModule }           from '@angular/http';
+import { NgModule }                from '@angular/core';
+import { BrowserModule }           from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { FormsModule }             from '@angular/forms';
+import { HttpModule }              from '@angular/http';
 
-import { InfiniteScrollModule } from 'ngx-infinite-scroll';
+import { InfiniteScrollModule }  from 'ngx-infinite-scroll';
 
 import { AppComponent }                from './app.component';
-import { MainComponent }                from './main/main-container.component';
+import { MobileComponent }              from './mobile/mobile.component';
+import { IntroComponent }              from './intro/intro.component';
+import { MainComponent }               from './main/main-container.component';
 import { YoutubeSearchComponent }      from './main/search/youtube-search.component';
 import { YoutubeMediaListComponent }   from './main/media-list/youtube-media-list.component';
 import { PlayerControlsComponent }     from './main/controls/player-controls.component';
@@ -19,6 +22,8 @@ import { PlaylistStoreService } from './shared/services/playlist-store.service';
 @NgModule({
   declarations: [
     AppComponent,
+    MobileComponent,
+    IntroComponent,
     MainComponent,
     YoutubeSearchComponent,
     PlayerControlsComponent,
@@ -27,6 +32,7 @@ import { PlaylistStoreService } from './shared/services/playlist-store.service';
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     InfiniteScrollModule,
     FormsModule,
     HttpModule

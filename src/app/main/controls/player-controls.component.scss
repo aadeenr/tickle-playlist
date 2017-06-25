@@ -1,0 +1,34 @@
+
+@import '../../shared/variables.scss';
+
+.btn.play,
+.btn.pause,
+.btn.next,
+.btn.previous {
+    border: 0;
+    background-color: transparent;
+    vertical-align: middle;
+}
+
+.btn.next,
+.btn.previous {
+    font-size: 1.3rem;
+    color: $light-color;
+}
+
+.btn.play,
+.btn.pause {
+    color: $accent-color;
+    padding: .68rem 1rem;
+    font-size: 3rem;
+}
+
+.controls-wrapper {
+    background-color: $dark-color;
+    position: fixed;
+    bottom: 0;
+    left: 320px;
+    right: 0;
+    z-index: 3;
+    text-align: center;
+}

@@ -6,7 +6,7 @@ import { YoutubeIframeService } from '../shared/services/youtube-iframe.service'
 @Component({
     selector: 'main-container',
     templateUrl: './main-container.component.html',
-    styleUrls: ['./main-container.component.css']
+    styleUrls: ['./main-container.component.scss']
 })
 
 export class MainComponent {

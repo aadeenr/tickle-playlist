@@ -1,5 +1,34 @@
 @import 'reset.css';
+@import url('https://fonts.googleapis.com/css?family=Josefin+Sans');
 
 * {
-    font-family: sans-serif;
+    font-family: 'Josefin Sans', 'Arial', 'Helvetica', sans-serif;
+    outline: none;
+}
+
+*::-webkit-scrollbar {
+    width: 0.3em;
+}
+ 
+*::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+}
+ 
+*::-webkit-scrollbar-thumb {
+  background-color: #e36414;
+}
+
+*::selection {
+  background: #e36414; /* WebKit/Blink Browsers */
+}
+*::-moz-selection {
+  background: #e36414; /* Gecko Browsers */
+}
+
+body {
+    overflow-x: hidden;
+}
+
+button {
+    cursor: pointer;
 }
